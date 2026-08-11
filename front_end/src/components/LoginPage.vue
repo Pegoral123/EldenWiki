@@ -143,8 +143,9 @@ export default {
           localStorage.setItem("refreshToken", res.refreshToken);
         }
 
-        // redireciona para mainPage (ou rota desejada)
-        this.$router.push({ path: "/mainPage" });
+        // Redireciona para a rota original (query param do guard) ou fallback para mainPage
+        const redirectTo = this.$route.query.redirect || "/mainPage";
+        this.$router.push(redirectTo);
       } catch (err) {
         // Preferir console.error para não bloquear a UI com alert nativo
         console.error("Login falhou:", err);
