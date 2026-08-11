@@ -87,7 +87,10 @@
 
           <div>
             <!-- Usar router-link para navegação SPA em vez de href -->
-            <router-link class="create" to="/RegisterPage">
+            <router-link
+              class="create"
+              :to="{ name: 'register', query: { redirect: $route.query.redirect } }"
+            >
               Forjar Nova Alma (Criar Conta)
             </router-link>
           </div>
