@@ -6,7 +6,7 @@
       </a>
     </div>
     <ul class="navbar-links">
-      <li><a href="/LoginPage" class="link-cadastro">Conectar-se</a></li>
+      <li><router-link to="/LoginPage" class="link-cadastro">Conectar-se</router-link></li>
       <li>
         <a
           href="https://discord.gg/q2zkd7k4my"
