@@ -1,0 +1,6 @@
+.venv/
+config/ServiceAccountKey.json
+.env
+__pycache__/
+router/__pycache__/
+routes/__pycache__/
