@@ -195,11 +195,11 @@ export default {
         const res = await registerUser(name, email, password);
         // Se o backend devolver tokens, podemos autenticar imediatamente
         if (res && res.idToken) {
-          // guarda token no serviço e no sessionStorage para persistência temporária
+          // guarda token no serviço e no localStorage (mesmo padrão do login)
           setAuthToken(res.idToken);
-          sessionStorage.setItem("idToken", res.idToken);
+          localStorage.setItem("idToken", res.idToken);
           if (res.refreshToken)
-            sessionStorage.setItem("refreshToken", res.refreshToken);
+            localStorage.setItem("refreshToken", res.refreshToken);
           // redireciona para a página principal após registro
           this.$router.push({ path: "/mainPage" });
           return;
