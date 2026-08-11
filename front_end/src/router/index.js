@@ -6,4 +6,20 @@ const router = createRouter({
   routes,
 });
 
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    const token = localStorage.getItem("idToken");
+
+    if (!token) {
+      
+      next({ name: "login", query: { redirect: to.fullPath } });
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
+});
+
 export default router;
