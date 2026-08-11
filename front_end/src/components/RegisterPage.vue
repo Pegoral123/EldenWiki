@@ -111,9 +111,12 @@
             <span v-else>Forjando...</span>
           </button>
 
-          <router-link to="/login" class="create"
-            >Já tenho alma (Login)</router-link
+          <router-link
+            class="create"
+            :to="{ name: 'login', query: { redirect: $route.query.redirect } }"
           >
+            Já tenho alma (Login)
+          </router-link>
         </form>
       </div>
     </div>
@@ -200,8 +203,9 @@ export default {
           localStorage.setItem("idToken", res.idToken);
           if (res.refreshToken)
             localStorage.setItem("refreshToken", res.refreshToken);
-          // redireciona para a página principal após registro
-          this.$router.push({ path: "/mainPage" });
+          // Honra redirect (ex: veio de /LoginPage?redirect=/mainPage) ou fallback para mainPage
+          const redirectTo = this.$route.query.redirect || "/mainPage";
+          this.$router.push(redirectTo);
           return;
         }
 
