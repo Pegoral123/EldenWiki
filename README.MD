@@ -20,20 +20,39 @@ O backend fornece uma API REST construída com FastAPI, autenticação via Fireb
 | Uvicorn | Servidor ASGI para executar o backend. |
 | Firebase Admin SDK | Autenticação e integração com Firestore. |
 | python-dotenv | Gerenciamento de variáveis de ambiente. |
+| pydantic-settings | Centralização de configurações via variáveis de ambiente. |
 
 ## Estrutura do Projeto
 
 ```
 back_end/
-├── main.py              # Ponto de entrada da aplicação, CORS, arquivos estáticos
-├── firebase_config.py   # Inicialização do Firebase Admin e funções auxiliares
-├── requirements.txt     # Dependências Python
-├── routes/
-│   ├── auth.py          # /auth/register, /auth/login, /auth/verify_token
-│   ├── bosses.py        # /boss/, /boss/limgrave_bosses, /boss/caelid_bosses
-│   └── locations.py     # /locations/limgrave, /locations/liurnia, /locations/caelid
+├── app/
+│   ├── __init__.py
+│   ├── main.py              # Cria app, monta static, registra routers e CORS — zero lógica de negócio
+│   ├── core/
+│   │   ├── __init__.py
+│   │   ├── config.py        # Classe Settings (pydantic-settings) centralizando env vars
+│   │   └── firebase.py      # Init Firebase Admin + create_user + verify_id_token
+│   ├── api/
+│   │   ├── __init__.py
+│   │   └── routes/
+│   │       ├── __init__.py
+│   │       ├── auth.py      # /auth/register, /auth/login, /auth/verify_token
+│   │       ├── bosses.py    # /boss/, /boss/limgrave_bosses, /boss/caelid_bosses
+│   │       └── locations.py # /locations/limgrave, /locations/liurnia, /locations/caelid
+│   ├── schemas/
+│   │   ├── __init__.py
+│   │   ├── auth.py          # RegisterModel, LoginModel (Pydantic)
+│   │   ├── boss.py          # Modelo Pydantic de resposta de Boss
+│   │   └── location.py      # Modelo Pydantic de resposta de Location
+│   └── services/
+│       ├── __init__.py
+│       ├── auth_service.py  # Lógica de autenticação (Identity Toolkit REST API)
+│       ├── boss_service.py  # Dados mockados de bosses + chamada API externa
+│       └── location_service.py  # Dados mockados de localizações
 ├── static/              # Imagens dos bosses servidas via /static/
-└── config/              # Chave de conta de serviço do Firebase (ignorada pelo git)
+├── config/              # Chave de conta de serviço do Firebase (ignorada pelo git)
+├── requirements.txt     # Dependências Python
 ```
 
 ## Endpoints da API
@@ -95,7 +114,7 @@ back_end/
 
 6. **Inicie o servidor backend:**
    ```bash
-   uvicorn main:app --reload
+   uvicorn app.main:app --reload
    ```
 
 7. **Acesse a API:**
@@ -104,7 +123,7 @@ back_end/
 
 ## Variáveis de Ambiente
 
-Crie um arquivo `.env` na pasta `back_end/`:
+Crie um arquivo `.env` na pasta `back_end/` (use `.env.example` como referência):
 
 ```
 FIREBASE_API_KEY=sua_chave_web_api_do_firebase
